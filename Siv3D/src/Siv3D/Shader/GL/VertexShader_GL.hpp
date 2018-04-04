@@ -17,6 +17,7 @@
 # include "../../../ThirdParty/GLFW/include/GLFW/glfw3.h"
 # include <Siv3D/Fwd.hpp>
 # include <Siv3D/Logger.hpp>
+# include <unordered_map>
 
 namespace s3d
 {
@@ -24,9 +25,11 @@ namespace s3d
 	{
 	private:
 		
-		GLuint m_vsProgram = 0;
+		GLuint m_shader = 0;
 		
 		bool m_initialized = false;
+        
+        std::unordered_map<std::string, GLuint> m_bindings;
 
 	public:
 
@@ -41,9 +44,9 @@ namespace s3d
 		
 		~VertexShader_GL()
 		{
-			if (m_vsProgram)
+			if (m_shader)
 			{
-				::glDeleteProgram(m_vsProgram);
+                ::glDeleteShader(m_shader);
 			}
 		}
 
@@ -52,34 +55,36 @@ namespace s3d
 			const std::string sourceUTF8 = source.toUTF8();
 			
 			const char* pSource = sourceUTF8.c_str();
-			
-			m_vsProgram = ::glCreateShaderProgramv(GL_VERTEX_SHADER, 1, &pSource);
+            
+            m_shader = ::glCreateShader(GL_VERTEX_SHADER);
+            ::glShaderSource(m_shader, 1, &pSource, NULL);
+            ::glCompileShader(m_shader);
 			
 			GLint status = GL_FALSE;
 			
-			::glGetProgramiv(m_vsProgram, GL_LINK_STATUS, &status);
+			::glGetShaderiv(m_shader, GL_COMPILE_STATUS, &status);
 			
 			GLint logLen = 0;
 			
-			::glGetProgramiv(m_vsProgram, GL_INFO_LOG_LENGTH, &logLen);
+			::glGetShaderiv(m_shader, GL_INFO_LOG_LENGTH, &logLen);
 			
 			if (logLen > 4)
 			{
 				std::string log(logLen + 1, '\0');
 				
-				::glGetProgramInfoLog(m_vsProgram, logLen, &logLen, &log[0]);
+				::glGetShaderInfoLog(m_shader, logLen, &logLen, &log[0]);
 				
 				LOG_FAIL(U"❌ Vertex shader compilation failed: {0}"_fmt(Unicode::Widen(log)));
 			}
 			
 			if (status == GL_FALSE)
 			{
-				::glDeleteProgram(m_vsProgram);
+				::glDeleteShader(m_shader);
 				
-				m_vsProgram = 0;
+				m_shader = 0;
 			}
 			
-			m_initialized = m_vsProgram != 0;
+			m_initialized = m_shader != 0;
 		}
 
 		bool isInitialized() const noexcept
@@ -87,20 +92,21 @@ namespace s3d
 			return m_initialized;
 		}
 
-		GLint getProgram() const
+		GLint getShader() const
 		{
-			return m_vsProgram;
-		}
-
-		GLuint getUniformBlockIndex(const char* const name)
-		{
-			return ::glGetUniformBlockIndex(m_vsProgram, name);
+			return m_shader;
 		}
 		
 		void setUniformBlockBinding(const char* const name, GLuint index)
 		{
-			::glUniformBlockBinding(m_vsProgram, getUniformBlockIndex(name), index);
+            std::string nameStr(name);
+            m_bindings[name] = index;
 		}
+        
+        std::unordered_map<std::string, GLuint>& getBindings()
+        {
+            return m_bindings;
+        }
 		
 		ByteArrayView getView() const;
 	};

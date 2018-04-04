@@ -19,9 +19,84 @@
 # include "VertexShader_GL.hpp"
 # include "PixelShader_GL.hpp"
 # include "../../AssetHandleManager/AssetHandleManager.hpp"
+# include <map>
+# include <tuple>
+# include <memory>
 
 namespace s3d
 {
+    class ShaderProgram
+    {
+    private:
+        GLuint m_program;
+        bool m_initialized;
+        Optional<GLint> m_textureIndex;
+        
+    public:
+        ShaderProgram(GLuint vs, GLuint ps)
+        {
+            m_program = ::glCreateProgram();
+            
+            ::glAttachShader(m_program, vs);
+            ::glAttachShader(m_program, ps);
+            
+            ::glLinkProgram(m_program);
+            
+            GLint status = GL_FALSE;
+            ::glGetProgramiv(m_program, GL_LINK_STATUS , &status);
+            
+            GLint logLen = 0;
+            ::glGetProgramiv(m_program, GL_INFO_LOG_LENGTH, &logLen);
+            
+            if (logLen > 4)
+            {
+                std::string log(logLen + 1, '\0');
+                ::glGetProgramInfoLog(m_program, logLen, &logLen, &log[0]);
+                LOG_FAIL(U"❌ Shader link failed: {0}"_fmt(Unicode::Widen(log)));
+            }
+            
+            if (status == GL_FALSE)
+            {
+                // link failed
+                ::glDeleteProgram(m_program);
+                m_program = 0;
+            }
+            
+            if (m_program)
+            {
+                const int32 t = ::glGetUniformLocation(m_program, "Tex0");
+                if (t != -1)
+                {
+                    m_textureIndex = t;
+                }
+            }
+            
+            m_initialized = m_program != 0;
+        }
+        
+        void setPSSamplerUniform()
+        {
+            if (m_textureIndex)
+            {
+                ::glUniform1i(m_textureIndex.value(), 0);
+            }
+        }
+        
+        ~ShaderProgram()
+        {
+            if (m_initialized)
+            {
+                LOG_DEBUG(U"deleting shader program {0}"_fmt(m_program));
+                ::glDeleteProgram(m_program);
+            }
+        }
+        
+        GLuint getProgram() const
+        {
+            return m_program;
+        }
+    };
+    
 	class CShader_GL : public ISiv3DShader
 	{
 	private:
@@ -33,6 +108,14 @@ namespace s3d
 		AssetHandleManager<VertexShaderID, VertexShader_GL> m_vertexShaders{ U"VertexShader" };
 		
 		AssetHandleManager<PixelShaderID, PixelShader_GL> m_pixelShaders{ U"PixelShader" };
+        
+        // cache for linked programs
+        std::map<std::tuple<GLuint, GLuint>, std::shared_ptr<ShaderProgram>> m_programs; // TODO unordered_map
+        
+        VertexShaderID m_currentVS;
+        PixelShaderID m_currentPS;
+        
+        std::shared_ptr<ShaderProgram> m_currentProgram;
 
 	public:
 
@@ -78,15 +161,17 @@ namespace s3d
 			return m_standardPSs[index];
 		}
 		
-		void setVS(VertexShaderID) override {}
+        void setVS(VertexShaderID handleID) override;
 
-		void setPS(PixelShaderID) override {}
+        void setPS(PixelShaderID handleID) override;
+        
+        void changeShaders(VertexShaderID vsID, PixelShaderID psID);
 		
-		GLuint getVSProgram(VertexShaderID handleID);
+		GLuint getVS(VertexShaderID handleID);
 		
-		GLuint getPSProgram(PixelShaderID handleID);
+		GLuint getPS(PixelShaderID handleID);
 		
-		void setPSSamplerUniform(PixelShaderID handleID);
+        void setPSSamplerUniform();
 	};
 }
 

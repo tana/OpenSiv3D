@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------
+//-----------------------------------------------
 //
 //	This file is part of the Siv3D Engine.
 //
@@ -15,6 +15,8 @@
 # include "CShader_GL.hpp"
 # include <Siv3D/TextReader.hpp>
 # include <Siv3D/Resource.hpp>
+# include <map>
+# include <tuple>
 
 namespace s3d
 {
@@ -32,6 +34,8 @@ namespace s3d
 		m_vertexShaders.destroy();
 		
 		m_pixelShaders.destroy();
+        
+        m_programs.clear();
 	}
 
 	bool CShader_GL::init()
@@ -76,6 +80,9 @@ namespace s3d
 			LOG_FAIL(U"❌ CShader_GL: Failed to load standard pixel shaders");
 			return false;
 		}
+        
+        m_currentVS = VertexShaderID::NullAsset();
+        m_currentPS = PixelShaderID::NullAsset();
 		
 		LOG_INFO(U"ℹ️ Shader initialized");
 		
@@ -139,6 +146,60 @@ namespace s3d
 		
 		return m_pixelShaders.add(pixelShader);
 	}
+    
+    void CShader_GL::setVS(const VertexShaderID handleID)
+    {
+        changeShaders(handleID, m_currentPS);
+    }
+    
+    void CShader_GL::setPS(const PixelShaderID handleID)
+    {
+        changeShaders(m_currentVS, handleID);
+    }
+    
+    void CShader_GL::changeShaders(VertexShaderID vsID, PixelShaderID psID)
+    {
+        m_currentVS = vsID;
+        m_currentPS = psID;
+        
+        if (vsID.isNullAsset() || psID.isNullAsset())
+        {
+            return;
+        }
+        
+        const GLuint vs = getVS(vsID);
+        const GLuint ps = getPS(psID);
+        const auto shaderTuple = std::make_tuple(vs, ps);
+        
+        if (m_programs.count(shaderTuple) == 0)
+        {
+            LOG_DEBUG(U"creating new program");
+            // create new program and cache
+            m_programs[shaderTuple] = std::make_shared<ShaderProgram>(vs, ps);
+            
+            GLuint program = m_programs[shaderTuple]->getProgram();
+            
+            // set uniform block binding
+            for (auto binding : m_vertexShaders[vsID]->getBindings())
+            {
+                GLuint idx = ::glGetUniformBlockIndex(program, binding.first.c_str());
+                ::glUniformBlockBinding(program, idx, binding.second);
+            }
+            
+            for (auto binding : m_pixelShaders[psID]->getBindings())
+            {
+                GLuint idx = ::glGetUniformBlockIndex(program, binding.first.c_str());
+                ::glUniformBlockBinding(program, idx, binding.second);
+            }
+            
+            LOG_DEBUG(U"created shader program");
+        }
+        
+        m_currentProgram = m_programs[shaderTuple];
+        
+        GLuint program = m_currentProgram->getProgram();
+        ::glUseProgram(program);
+    }
 	
 	void CShader_GL::releaseVS(const VertexShaderID handleID)
 	{
@@ -150,20 +211,20 @@ namespace s3d
 		m_pixelShaders.erase(handleID);
 	}
 	
-	GLuint CShader_GL::getVSProgram(const VertexShaderID handleID)
+	GLuint CShader_GL::getVS(const VertexShaderID handleID)
 	{
-		return m_vertexShaders[handleID]->getProgram();
+		return m_vertexShaders[handleID]->getShader();
 	}
 	
-	GLuint CShader_GL::getPSProgram(const PixelShaderID handleID)
+	GLuint CShader_GL::getPS(const PixelShaderID handleID)
 	{
-		return m_pixelShaders[handleID]->getProgram();
+		return m_pixelShaders[handleID]->getShader();
 	}
 	
-	void CShader_GL::setPSSamplerUniform(const PixelShaderID handleID)
-	{
-		m_pixelShaders[handleID]->setPSSamplerUniform();
-	}
+    void CShader_GL::setPSSamplerUniform()
+    {
+        m_currentProgram->setPSSamplerUniform();
+    }
 }
 
 # endif
