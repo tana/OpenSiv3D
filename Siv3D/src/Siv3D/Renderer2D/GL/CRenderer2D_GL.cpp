@@ -172,7 +172,7 @@ namespace s3d
 					const auto* command = static_cast<const GLRender2DCommand<GLRender2DInstruction::Draw>*>(static_cast<const void*>(commandPointer));
 					
 					//Log(L"Draw: ", command->indexSize);
-					::glDrawElementsBaseVertex(GL_TRIANGLES, command->indexSize, GL_UNSIGNED_INT, (uint32*)(nullptr) + batchDrawOffset.indexStartLocation, batchDrawOffset.vertexStartLocation);
+                    ::glDrawElements(GL_TRIANGLES, command->indexSize, GL_UNSIGNED_INT, (uint32*)(nullptr) + batchDrawOffset.indexStartLocation);
 					
 					batchDrawOffset.indexStartLocation += command->indexSize;
 					

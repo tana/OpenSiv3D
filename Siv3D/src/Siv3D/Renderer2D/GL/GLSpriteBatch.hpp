@@ -272,7 +272,12 @@ namespace s3d
 					void* pDst = ::glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32) * m_indexBufferWritePos, sizeof(uint32) * indexSize,
 													GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_RANGE_BIT | GL_MAP_UNSYNCHRONIZED_BIT);
 					
-					::memcpy(pDst, indexData, sizeof(uint32) * indexSize);
+					// Adding vertexOffset (batchDrawOffset.vertexStartLocation) to index
+                    // instead of glDrawElementsBaseVertex
+                    for (size_t i = 0; i < indexSize; ++i)
+                    {
+                        ((uint32*)pDst)[i] = indexData[i] + vertexOffset;
+                    }
 					
 					::glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 				}
