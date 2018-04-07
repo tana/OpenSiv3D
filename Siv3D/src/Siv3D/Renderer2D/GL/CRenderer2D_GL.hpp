@@ -24,46 +24,6 @@
 
 namespace s3d
 {
-	class ShaderPipeline
-	{
-	private:
-		
-		GLuint m_pipeline = 0;
-		
-	public:
-		
-		~ShaderPipeline()
-		{
-			if (m_pipeline)
-			{
-				::glDeleteProgramPipelines(1, &m_pipeline);
-			}
-		}
-		
-		bool init()
-		{
-			::glGenProgramPipelines(1, &m_pipeline);
-			
-			return m_pipeline != 0;
-		}
-		
-		void setVS(GLuint vsProgramHandle)
-		{
-			::glUseProgramStages(m_pipeline, GL_VERTEX_SHADER_BIT, vsProgramHandle);
-		}
-		
-		void setPS(GLuint psProgramHandle)
-		{
-			::glUseProgramStages(m_pipeline, GL_FRAGMENT_SHADER_BIT, psProgramHandle);
-		}
-		
-		void use()
-		{
-			::glUseProgram(0);
-			::glBindProgramPipeline(m_pipeline);
-		}
-	};
-					
 	struct SpriteCB
 	{
 		static const char* Name()
@@ -82,8 +42,6 @@ namespace s3d
 	class CRenderer2D_GL : public ISiv3DRenderer2D
 	{
 	private:
-
-		ShaderPipeline m_pipeline;
 
 		ConstantBuffer<SpriteCB> m_cbSprite;
 		

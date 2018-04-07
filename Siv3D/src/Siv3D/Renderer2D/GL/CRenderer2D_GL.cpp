@@ -104,11 +104,6 @@ namespace s3d
 
 	bool CRenderer2D_GL::init()
 	{
-		if (!m_pipeline.init())
-		{
-			return false;
-		}
-		
 		if (!m_spriteBatch.init())
 		{
 			return false;
