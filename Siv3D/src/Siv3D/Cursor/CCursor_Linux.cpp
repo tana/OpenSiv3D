@@ -14,7 +14,7 @@
 
 # include <GL/glew.h>
 # include "../../ThirdParty/GLFW/include/GLFW/glfw3.h"
-# include "../../ThirdParty/GLFW/include/GLFW/glfw3native.h"
+// # include "../../ThirdParty/GLFW/include/GLFW/glfw3native.h"
 # include "../Siv3DEngine.hpp"
 # include "CCursor_Linux.hpp"
 # include <Siv3D/Logger.hpp>
@@ -53,6 +53,8 @@ namespace s3d
 	void CCursor_Linux::update()
 	{
 		// グラブ処理
+        // TODO
+        /*
 		if (!m_grabbing_old && m_grabbing)
 		{
 			Display* display = ::glfwGetX11Display();
@@ -67,6 +69,7 @@ namespace s3d
 			::XUngrabPointer(display, CurrentTime);
 		}
 		m_grabbing_old = m_grabbing;
+        */
 
 		double clientX, clientY;
 		::glfwGetCursorPos(m_glfwWindow, &clientX, &clientY);

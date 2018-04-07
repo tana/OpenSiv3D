@@ -94,7 +94,9 @@ namespace s3d
 
 	# endif
 
+        # if !defined(__EMSCRIPTEN__)
 		m_mpg123 = dlopen(libPath.narrow().c_str(), RTLD_LOCAL | RTLD_LAZY);
+        # endif
 
 		if (!m_mpg123)
 		{

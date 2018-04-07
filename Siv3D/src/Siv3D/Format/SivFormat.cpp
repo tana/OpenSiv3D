@@ -130,6 +130,7 @@ namespace s3d
 		}
 	}
 
+# ifndef __EMSCRIPTEN__
 	void Formatter(FormatData& formatData, __m128 value)
 	{
 	# if defined(SIV3D_TARGET_WINDOWS)
@@ -142,4 +143,5 @@ namespace s3d
 	
 	# endif	
 	}
+# endif
 }

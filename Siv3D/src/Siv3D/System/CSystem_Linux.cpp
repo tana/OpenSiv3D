@@ -142,10 +142,10 @@ namespace s3d
 			return false;
 		}
 
-		if (!Siv3DEngine::GetGraphics()->init())
-		{
-			return false;
-		}
+		// if (!Siv3DEngine::GetGraphics()->init())
+		// {
+		// 	return false;
+		// }
 
 		Siv3DEngine::GetGraphics()->clear();
 
@@ -169,10 +169,10 @@ namespace s3d
 			return false;
 		}
 
-		if (!Siv3DEngine::GetScript()->init())
-		{
-			return false;
-		}
+		// if (!Siv3DEngine::GetScript()->init())
+		// {
+		// 	return false;
+		// }
 
 		if (!Siv3DEngine::GetAsset()->init())
 		{

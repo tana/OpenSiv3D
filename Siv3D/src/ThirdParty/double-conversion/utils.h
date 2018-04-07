@@ -88,6 +88,10 @@ inline void abort_noreturn() { abort(); }
 #else
 #undef DOUBLE_CONVERSION_CORRECT_DOUBLE_OPERATIONS
 #endif  // _WIN32
+// (Modification for Siv3D Emscripten Port)
+// TODO This may be incorrect
+#elif defined(__EMSCRIPTEN__)
+#define DOUBLE_CONVERSION_CORRECT_DOUBLE_OPERATIONS 1 // TODO
 #else
 #error Target architecture was not detected as supported by Double-Conversion.
 #endif

@@ -318,3 +318,14 @@ Linux/Test/example
 Linux/Test/resources
 Linux/Test/Siv3D_Test
 
+# Web
+CMakeCache.txt
+CMakeFiles
+Makefile
+Web/Test/engine
+Web/Test/example
+Web/Test/resources
+Web/Test/Siv3D_Test.html
+Web/Test/Siv3D_Test.js
+Web/Test/Siv3D_Test.data
+Web/deps

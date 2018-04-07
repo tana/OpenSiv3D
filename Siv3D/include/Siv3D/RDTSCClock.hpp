@@ -18,7 +18,13 @@ namespace s3d
 {
 	namespace detail
 	{
-	# if defined(SIV3D_TARGET_WINDOWS)
+    // TODO
+    # if defined(__EMSCRIPTEN__)
+        static __inline__ uint64 rdtsc()
+        {
+          return 0; // TODO
+        }
+	# elif defined(SIV3D_TARGET_WINDOWS)
 
 		__forceinline uint64 rdtsc()
 		{

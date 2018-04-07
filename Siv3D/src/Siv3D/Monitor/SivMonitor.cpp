@@ -266,6 +266,8 @@ namespace s3d
 				Monitor result;
 				result.name = Unicode::Widen(::glfwGetMonitorName(monitor));
 				
+                // TODO
+                /*
 				uint32 displayID;
 				int32 xPos, yPos, width, height;
 				int32 wx, wy, ww, wh;
@@ -284,10 +286,11 @@ namespace s3d
 				result.workArea.w = ww;
 				result.workArea.h = wh;
 				result.isPrimary = (i == 0);
+                */
 
 				results.push_back(result);
 
-				::free(name); // free monitor name buffer.
+				//::free(name); // free monitor name buffer.
 			}
 			
 			return results;

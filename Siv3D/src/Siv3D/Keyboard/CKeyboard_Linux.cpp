@@ -175,7 +175,9 @@ namespace s3d
 	{
 		bool anyKeyDown = false;
 
-		const char* keys = ::glfwGetKeysSiv3D(m_glfwWindow);
+        // TODO
+		// const char* keys = ::glfwGetKeysSiv3D(m_glfwWindow);
+        const char* keys = "";
 
 		for (const auto& keyPair : detail::KeyConversionTable)
 		{

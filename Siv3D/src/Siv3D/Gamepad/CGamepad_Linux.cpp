@@ -54,6 +54,8 @@ namespace s3d
 
 	void CGamepad::update(const bool)
 	{
+        // TODO
+        /*
 		for (uint32 userIndex = 0; userIndex < Gamepad.MaxUserCount; ++userIndex)
 		{
 			auto& state = m_states[userIndex];
@@ -160,6 +162,7 @@ namespace s3d
 				dst.buttons << Key(InputDevice::Gamepad, static_cast<uint8>(i), userIndex);
 			}
 		}
+        */
 	}
 
 	bool CGamepad::isConnected([[maybe_unused]] const size_t userIndex) const

@@ -218,6 +218,8 @@ namespace s3d
 		{
 			Array<GamepadInfo> results;
 			
+            // TODO
+            /*
 			unsigned vendorID = 0, productID = 0, version = 0;
 			
 			for (uint32 i = 0; i < Gamepad.MaxUserCount; ++i)
@@ -234,6 +236,7 @@ namespace s3d
 					results << info;
 				}
 			}
+            */
 			
 			return results;
 		}

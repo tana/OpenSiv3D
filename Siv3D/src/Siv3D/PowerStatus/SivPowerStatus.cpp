@@ -93,10 +93,13 @@ namespace s3d
 
 namespace s3d
 {
+    // TODO
+    /*
 	namespace detail
 	{
 		void GetPowerStatus_Linux(PowerStatus& result);
 	}
+    */
 
 	namespace System
 	{
@@ -104,7 +107,8 @@ namespace s3d
 		{
 			PowerStatus status;
 
-			detail::GetPowerStatus_Linux(status);
+            // TODO
+			//detail::GetPowerStatus_Linux(status);
 
 			return PowerStatus();
 		}

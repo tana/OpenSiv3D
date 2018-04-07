@@ -10,7 +10,9 @@
 //-----------------------------------------------
 
 # pragma once
-# include <xmmintrin.h>
+# ifndef __EMSCRIPTEN__
+# 	include <xmmintrin.h>
+# endif
 # include <sstream>
 # include "Fwd.hpp"
 # include "BoolFormat.hpp"
@@ -317,7 +319,9 @@ namespace s3d
         Formatter(formatData, static_cast<double>(value));
     }
 
+# ifndef __EMSCRIPTEN__
 	void Formatter(FormatData& formatData, __m128 value);
+# endif
 
 	inline void Formatter(FormatData& formatData, const FormatData::DecimalPlace decimalPlace)
 	{

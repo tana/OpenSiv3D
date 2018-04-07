@@ -11,7 +11,7 @@
 
 # pragma once
 
-# if defined(SIV3D_TARGET_WINDOWS) || defined(SIV3D_TARGET_MACOS) || defined(SIV3D_TARGET_LINUX)
+# if (defined(SIV3D_TARGET_WINDOWS) || defined(SIV3D_TARGET_MACOS) || defined(SIV3D_TARGET_LINUX)) && !defined(__EMSCRIPTEN__)
 
 	# define HAVE_SSE2
 

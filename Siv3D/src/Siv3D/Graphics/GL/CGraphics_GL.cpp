@@ -127,12 +127,15 @@ namespace s3d
 			
 			int32 xPos, yPos, width, height;
 			
+            // TODO
+            /*
 			glfwGetMonitorRect_Siv3D(monitor, &xPos, &yPos, &width, &height);
 			output.displayRect.x = xPos;
 			output.displayRect.y = yPos;
 			output.displayRect.w = width;
 			output.displayRect.h = height;
 			output.rotation = 0; // [Siv3D ToDo]
+            */
 			
 			int32 numModes;
 			const GLFWvidmode* videoModes = ::glfwGetVideoModes(monitor, &numModes);

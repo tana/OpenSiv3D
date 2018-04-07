@@ -28,6 +28,7 @@ namespace s3d
 
 	bool CCPU::init()
 	{
+        /*
 		FeatureDetector::cpu_x86 cpuFeature;
 
 		cpuFeature.detect_host();
@@ -158,6 +159,7 @@ namespace s3d
 		}
 
 		LOG_INFO(U"ℹ️ Instruction set extensions: {0}"_fmt(features.join(U", ", U"", U"")));
+        */
 
 		return true;
 	}

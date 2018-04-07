@@ -9,7 +9,9 @@
 //
 //-----------------------------------------------
 
+# ifndef __EMSCRIPTEN__
 # define RAPIDJSON_SSE2
+# endif
 # include "../../ThirdParty/rapidjson/rapidjson.h"
 # include "../../ThirdParty/rapidjson/document.h"
 # include <Siv3D/JSONReader.hpp>

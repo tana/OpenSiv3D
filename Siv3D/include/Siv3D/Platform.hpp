@@ -31,7 +31,7 @@
 	/// </summary>
 	# define SIV3D_TARGET_MACOS
 
-# elif defined(__linux__)
+# elif defined(__linux__) || defined(__EMSCRIPTEN__)
 
 	/// <summary>
 	/// Target platform: Linux

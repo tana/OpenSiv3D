@@ -11,7 +11,9 @@
 
 # pragma once
 # include <cfloat>
+# ifndef __EMSCRIPTEN__
 # include <emmintrin.h>
+# endif
 # include "Utility.hpp"
 # include "BigFloat.hpp"
 # include "PointVector.hpp"
