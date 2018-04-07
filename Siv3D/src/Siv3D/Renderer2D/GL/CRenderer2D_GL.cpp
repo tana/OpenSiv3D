@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------
+//-----------------------------------------------
 //
 //	This file is part of the Siv3D Engine.
 //
@@ -150,10 +150,9 @@ namespace s3d
 		
 		//Log(L"----");
 	
-		m_pipeline.setVS(shader->getVSProgram(shader->getStandardVS(0).id()));
-		m_pipeline.setPS(shader->getPSProgram(shader->getStandardPS(0).id()));
-		
-		m_pipeline.use();
+        shader->setVS(shader->getStandardVS(0).id());
+        shader->setPS(shader->getStandardPS(0).id());
+        
 		Mat3x2 currentMat = Mat3x2::Identity();
 		Mat3x2 currentScreen;
 		
@@ -173,7 +172,7 @@ namespace s3d
 					const auto* command = static_cast<const GLRender2DCommand<GLRender2DInstruction::Draw>*>(static_cast<const void*>(commandPointer));
 					
 					//Log(L"Draw: ", command->indexSize);
-					::glDrawElementsBaseVertex(GL_TRIANGLES, command->indexSize, GL_UNSIGNED_INT, (uint32*)(nullptr) + batchDrawOffset.indexStartLocation, batchDrawOffset.vertexStartLocation);
+                    ::glDrawElements(GL_TRIANGLES, command->indexSize, GL_UNSIGNED_INT, (uint32*)(nullptr) + batchDrawOffset.indexStartLocation);
 					
 					batchDrawOffset.indexStartLocation += command->indexSize;
 					
@@ -271,8 +270,8 @@ namespace s3d
 					const auto* command = static_cast<const GLRender2DCommand<GLRender2DInstruction::PixelShader>*>(static_cast<const void*>(commandPointer));
 					
 					//Log(L"PixelShader: id = ", command->psID);
-					m_pipeline.setPS(shader->getPSProgram(command->psID));
-					shader->setPSSamplerUniform(command->psID);
+                    shader->setPS(command->psID);
+                    shader->setPSSamplerUniform();
 					
 					break;
 				}
