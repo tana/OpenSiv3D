@@ -1,6 +1,9 @@
-#version 410
+#version 300 es
 		
-layout(location = 0) in vec4 Color;
+precision mediump float;
+
+//layout(location = 0) in vec4 Color;
+in vec4 Color;
 		
 layout(location = 0) out vec4 FragColor;
 		

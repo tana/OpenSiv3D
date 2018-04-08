@@ -29,7 +29,6 @@ set(CMAKE_C_FLAGS_MINSIZEREL "-Os -DNDEBUG -march=x86-64")
 # pkg_check_modules(LIBSIV3D REQUIRED gl glu openal)
 include_directories(
 	# "/usr/include"
-	# "~/emsdk/emscripten/1.37.36/system/include"
 	"."
 	"../Siv3D/include"
 	"../Siv3D/include/ThirdParty"
@@ -40,6 +39,10 @@ include_directories(
 
 	"../Siv3D/src/ThirdParty/zstd"
 	"../Siv3D/src/ThirdParty/zstd/common"
+
+    # Use emscripten headers if available
+    # TODO specify dir without version (1.37.36)
+	"~/emsdk/emscripten/1.37.36/system/include"
 
 	${LIBSIV3D_INCLUDE_DIRS}
 )

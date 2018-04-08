@@ -245,8 +245,13 @@ namespace s3d
 
 				if (vertexSize)
 				{
+# ifdef __EMSCRIPTEN__
+					void* pDst = ::glMapBufferRange(GL_ARRAY_BUFFER, sizeof(Vertex2D) * m_vertexBufferWritePos, sizeof(Vertex2D) * vertexSize,
+													GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
+# else
 					void* pDst = ::glMapBufferRange(GL_ARRAY_BUFFER, sizeof(Vertex2D) * m_vertexBufferWritePos, sizeof(Vertex2D) * vertexSize,
 													GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_RANGE_BIT | GL_MAP_UNSYNCHRONIZED_BIT);
+# endif
 					
 					::memcpy(pDst, vertexData, sizeof(Vertex2D) * vertexSize);
 					
@@ -269,8 +274,13 @@ namespace s3d
 
 				if (indexSize)
 				{
+# ifdef __EMSCRIPTEN__
+					void* pDst = ::glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32) * m_indexBufferWritePos, sizeof(uint32) * indexSize,
+													GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
+# else
 					void* pDst = ::glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32) * m_indexBufferWritePos, sizeof(uint32) * indexSize,
 													GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_RANGE_BIT | GL_MAP_UNSYNCHRONIZED_BIT);
+# endif
 					
 					// Adding vertexOffset (batchDrawOffset.vertexStartLocation) to index
                     // instead of glDrawElementsBaseVertex

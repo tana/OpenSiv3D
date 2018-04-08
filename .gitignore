@@ -328,4 +328,5 @@ Web/Test/resources
 Web/Test/Siv3D_Test.html
 Web/Test/Siv3D_Test.js
 Web/Test/Siv3D_Test.data
+Web/Test/Siv3D_Test.wasm
 Web/deps

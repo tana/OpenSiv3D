@@ -14,8 +14,14 @@ set(CMAKE_CXX_COMPILER "em++")
 # Use Emscripten ports (GLFW etc. https://kripken.github.io/emscripten-site/docs/compiling/Building-Projects.html#build-system-issues )
 # Use WebGL 2.0 and Desktop OpenGL emuation ( https://kripken.github.io/emscripten-site/docs/porting/multimedia_and_graphics/OpenGL-support.html )
 # Package resources and example directories ( https://kripken.github.io/emscripten-site/docs/porting/files/packaging_files.html )
-# TODO WASM
-set(CMAKE_CXX_FLAGS "-std=c++1z -Wall -Wextra -Wno-unknown-pragmas -s USE_WEBGL2=1 -s LEGACY_GL_EMULATION=1 -s USE_GLFW=3 -s USE_ZLIB=1 -s USE_LIBPNG=1 -s USE_FREETYPE=1 --preload-file resources --preload-file example -s TOTAL_MEMORY=268435456 -s ASSERTIONS=2 -s DEMANGLE_SUPPORT=1")
+# If LEGACY_GL_EMULATION is enabled, some code is added to shader sources.
+# It causes error when the shader has #version directive.
+# Therefore, LEGACY_GL_EMULATION is not used here.
+# See: https://github.com/kripken/emscripten/issues/2105
+#      https://github.com/kripken/emscripten/pull/2082
+# FULL_ES3 is necessary for glMapBuffer
+# See: https://kripken.github.io/emscripten-site/docs/optimizing/Optimizing-WebGL.html
+set(CMAKE_CXX_FLAGS "-std=c++1z -Wall -Wextra -Wno-unknown-pragmas -s USE_WEBGL2=1 -s FULL_ES3=1 -s USE_GLFW=3 -s USE_ZLIB=1 -s USE_LIBPNG=1 -s USE_FREETYPE=1 --preload-file resources --preload-file example -s TOTAL_MEMORY=268435456 -s ASSERTIONS=2 -s DEMANGLE_SUPPORT=1")# -s WASM=1")
 set(CMAKE_CXX_FLAGS_DEBUG "-g3 -O0 -pg -DDEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG -march=x86-64")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g3 -Og -pg -DDEBUG")
