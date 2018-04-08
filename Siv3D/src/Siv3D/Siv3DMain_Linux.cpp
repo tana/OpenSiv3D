@@ -12,6 +12,8 @@
 # include <Siv3D/Platform.hpp>
 # if defined(SIV3D_TARGET_LINUX)
 
+# include <emscripten.h>
+
 # include <iostream>
 # include <unistd.h>
 # include <Siv3D/String.hpp>
@@ -21,7 +23,10 @@
 # include "Siv3DEngine.hpp"
 # include "System/ISystem.hpp"
 
-void Main();
+// void Main();
+void OnStart();
+bool OnUpdate();
+void OnExit();
 
 namespace s3d
 {
@@ -33,6 +38,10 @@ namespace s3d
 		}
 	}
 }
+
+s3d::Siv3DEngine* engine;
+
+void mainLoop();
 
 int main(int, char* argv[])
 {
@@ -52,7 +61,8 @@ int main(int, char* argv[])
 
 	chdir(FileSystem::ParentPath(path, 0).narrow().c_str());
 
-	Siv3DEngine engine;
+	// Siv3DEngine engine;
+    engine = new Siv3DEngine();
 
 	if (!Siv3DEngine::GetSystem()->init())
 	{
@@ -60,10 +70,32 @@ int main(int, char* argv[])
 	}
 
 	Logger.writeRawHTML_UTF8(u8"<hr width=\"99%\">");
-	
-	Main();
-	
-	Logger.writeRawHTML_UTF8(u8"<hr width=\"99%\">");
+// 	
+// 	Main();
+// 	
+// 	Logger.writeRawHTML_UTF8(u8"<hr width=\"99%\">");
+// }
+
+    OnStart();
+    
+    emscripten_set_main_loop(mainLoop, 0, true);
+}
+
+void mainLoop()
+{
+    using namespace s3d;
+
+    if (!OnUpdate())
+    {
+      // finished
+      OnExit();
+
+   	  Logger.writeRawHTML_UTF8(u8"<hr width=\"99%\">");
+
+      delete engine;
+      
+      exit(0);
+    }
 }
 
 # endif

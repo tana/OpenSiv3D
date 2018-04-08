@@ -21,7 +21,7 @@ set(CMAKE_CXX_COMPILER "em++")
 #      https://github.com/kripken/emscripten/pull/2082
 # FULL_ES3 is necessary for glMapBuffer
 # See: https://kripken.github.io/emscripten-site/docs/optimizing/Optimizing-WebGL.html
-set(CMAKE_CXX_FLAGS "-std=c++1z -Wall -Wextra -Wno-unknown-pragmas -s USE_WEBGL2=1 -s FULL_ES3=1 -s USE_GLFW=3 -s USE_ZLIB=1 -s USE_LIBPNG=1 -s USE_FREETYPE=1 --preload-file resources --preload-file example -s TOTAL_MEMORY=268435456 -s ASSERTIONS=2 -s DEMANGLE_SUPPORT=1")# -s WASM=1")
+set(CMAKE_CXX_FLAGS "-std=c++1z -Wall -Wextra -Wno-unknown-pragmas -s USE_WEBGL2=1 -s FULL_ES3=1 -s USE_GLFW=3 -s USE_ZLIB=1 -s USE_LIBPNG=1 -s USE_FREETYPE=1 --preload-file resources --preload-file example -s TOTAL_MEMORY=268435456 -s ASSERTIONS=2 -s DEMANGLE_SUPPORT=1 -s WASM=1")
 set(CMAKE_CXX_FLAGS_DEBUG "-g3 -O0 -pg -DDEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG -march=x86-64")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g3 -Og -pg -DDEBUG")
