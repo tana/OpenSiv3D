@@ -57,7 +57,8 @@ namespace s3d
 	
 	GLRasterizerState::GLRasterizerState()
 	{
-		::glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		// ::glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        ::glCullFace(GL_FRONT_AND_BACK);
 		
 		::glDisable(GL_CULL_FACE);
 						
@@ -76,7 +77,8 @@ namespace s3d
 		
 		if (state.fillMode != m_currentState.fillMode)
 		{
-			::glPolygonMode(GL_FRONT_AND_BACK, state.fillMode == FillMode::Solid ? GL_FILL : GL_LINE);
+			// ::glPolygonMode(GL_FRONT_AND_BACK, state.fillMode == FillMode::Solid ? GL_FILL : GL_LINE);
+            ::glCullFace(GL_FRONT_AND_BACK);
 		}
 
 		if (state.cullMode != m_currentState.cullMode)
