@@ -44,13 +44,11 @@ link_directories(
     "../deps/lib"
 )
 
-# add_executable("Siv3D_Test.bc"
 add_executable("Siv3D_Test"
 	"../../Siv3D-Test/Main.cpp"
 	# "../../Siv3D-Test/Test/Test.cpp"
 )
 
-# target_link_libraries("Siv3D_Test.bc"
 target_link_libraries("Siv3D_Test"
 	-lboost_filesystem
 	-lboost_system
@@ -84,7 +82,6 @@ target_link_libraries("Siv3D_Test"
 
 	${PROJECT_SOURCE_DIR}/../Debug/libSiv3D.a
 	# ${PROJECT_SOURCE_DIR}/../../Siv3D/lib/Linux/angelscript/libangelscript.a
-    ${PROJECT_SOURCE_DIR}/../deps/lib/libangelscript.a
 )
 
 # To emit HTML as executable

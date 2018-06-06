@@ -6,7 +6,6 @@ private:
     const Font font;
 
     const Texture textureCat;
-    int count = 0;
 
 public:
     MainClass()
@@ -24,6 +23,11 @@ public:
             return false;
         }
 
+        // change background color based on cursor position
+        int x = Cursor::Pos().x;
+        int y = Cursor::Pos().y;
+        Graphics::SetBackground(ColorF((float)x / 640.0, (float)y / 480.0, 0.0));
+
         font(U"Hello, Siv3D!🐣").drawAt(Window::Center(), Palette::Black);
 
         font(Cursor::Pos()).draw(20, 400, ColorF(0.6));
@@ -31,14 +35,6 @@ public:
         textureCat.resized(80).draw(540, 380);
 
         Circle(Cursor::Pos(), 60).draw(ColorF(1, 0, 0, 0.5));
-
-        Logger << Cursor::Pos();
-
-        if (count > 600) {
-            return false;
-        }
-        Logger << U"count={0}"_fmt(count);
-        count++;
 
         return true;
     }

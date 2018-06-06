@@ -40,10 +40,6 @@ include_directories(
 	"../Siv3D/src/ThirdParty/zstd"
 	"../Siv3D/src/ThirdParty/zstd/common"
 
-    # Use emscripten headers if available
-    # TODO specify dir without version (1.37.36)
-	"~/emsdk/emscripten/1.37.36/system/include"
-
 	${LIBSIV3D_INCLUDE_DIRS}
 )
 
